@@ -36,6 +36,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define RESPONSE_CODE(class, detail) ((class << 5) | (detail))
 #define COAP_OPTION_DELTA(v, n) (v < 13 ? (*n = (0xFF & v)) : (v <= 0xFF + 13 ? (*n = 13) : (*n = 14)))
 
+#include <functional>
+
 typedef enum {
     COAP_CON = 0,
     COAP_NONCON = 1,
@@ -121,7 +123,7 @@ class CoapPacket {
     uint8_t optionnum;
     CoapOption options[MAX_OPTION_NUM];
 };
-typedef void (*callback)(CoapPacket &, IPAddress, int);
+typedef std::function<void (CoapPacket &, IPAddress, int)> callback;
 
 class CoapUri {
     private:
